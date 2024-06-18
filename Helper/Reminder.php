@@ -2,8 +2,9 @@
 
 namespace Lipscore\RatingsReviews\Helper;
 
-use Lipscore\RatingsReviews\Helper\AbstractHelper;
-use Magento\Sales\Model\Order;
+use Magento\Bundle\Model\Product\Type;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Framework\UrlInterface;
 
 class Reminder extends AbstractHelper
@@ -92,19 +93,22 @@ class Reminder extends AbstractHelper
     {
         $productsData = [];
         $storeId = $order->getStoreId();
-        $orderItems = $order->getAllVisibleItems();
+        $orderItems = $order->getAllItems();
 
         foreach ($orderItems as $orderItem) {
             $productId = $orderItem->getProductId();
-            $product   = $this->productFactory->create()->load($productId);
-
+            $product = $this->productFactory->create()->load($productId);
             $parentProductId = $this->getParentProductId($product, $orderItem);
-            if ($parentProductId) {
-                $product = $this->productFactory->create()->load($parentProductId);
-            }
-
             $product->setStoreId($storeId);
-            $data = $this->productHelper->getProductData($product);
+
+            if ($parentProductId) {
+                $parentProduct = $this->productFactory->create()->load($parentProductId);
+                $data = $this->productHelper->getProductOptionData($parentProduct, $product);
+            } elseif (!in_array($orderItem->getProductType(), [Configurable::TYPE_CODE, Type::TYPE_CODE, Grouped::TYPE_CODE])) {
+                $data = $this->productHelper->getProductData($product);
+            } else {
+                continue;
+            }
 
             if (!$product->isVisibleInSiteVisibility() && !$parentProductId) {
                 $store = $this->storeManager->getStore($storeId);

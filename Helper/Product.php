@@ -47,6 +47,20 @@ class Product extends AbstractHelper
         return $data;
     }
 
+    public function getProductOptionData(MagentoProduct $parentProduct, MagentoProduct $product)
+    {
+        $data = [];
+        try {
+            $data = array_merge(
+                $this->_getProductData($parentProduct),
+                $this->_getProductOptionData($product)
+            );
+        } catch (\Exception $e) {
+            $this->logger->log($e);
+        }
+        return $data;
+    }
+
     protected function _getProductData(MagentoProduct $product)
     {
         return [
@@ -62,6 +76,15 @@ class Product extends AbstractHelper
             'description'  => $this->getDescription($product),
             'availability' => $this->getAvailability($product),
             'gtin'         => $this->getGtin($product)
+        ];
+    }
+
+    protected function _getProductOptionData(MagentoProduct $product)
+    {
+        return [
+            'variant_id'   => $this->getId($product),
+            'variant_name' => $this->getName($product),
+            'variant_sku'  => $this->getSku($product)
         ];
     }
 
