@@ -85,6 +85,10 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Please make sure that Q&amp;A is also enabled in your Lipscore Dashboard on https://members.lipscore.com</comment>
                 </field>
+                <field id="testimonials" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Product Testimonials</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
 
             <group id="module" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
