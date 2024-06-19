@@ -3,7 +3,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="product.info.main">
-            <block class="Lipscore\RatingsReviews\Block\Product\Testimonials" after="product.info.price" name="lipscore_testimonials" as="lipscore-testimonials" />
+            <block class="Lipscore\RatingsReviews\Block\Product\Testimonials" after="product.info.price" name="lipscore_testimonials" as="lipscore-testimonials" ifconfig="lipscore_general/appearance/testimonials" />
         </referenceContainer>
         <referenceBlock name="product.info.details">
             <block class="Lipscore\RatingsReviews\Block\Product\Review" after="product.attributes" name="lipscore_reviews.tab" as="lipscore-reviews" group="detailed_info" />
